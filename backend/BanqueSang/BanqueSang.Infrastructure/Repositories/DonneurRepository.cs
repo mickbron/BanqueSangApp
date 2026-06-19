@@ -155,4 +155,27 @@ public class DonneurRepository : IDonneurRepository
 
         return rowsAffected > 0;
     }
+    
+    
+    /// <summary>
+    /// Met à jour la date du dernier don d'un donneur après l'enregistrement d'un don.
+    /// </summary>
+    public async Task<bool> UpdateDernierDonAsync(int idDonneur, DateTime dateDon)
+    {
+        using var connection = _connectionFactory.CreateConnection();
+
+        const string sql = """
+                               UPDATE DONNEUR
+                               SET donneur_dernier_don = @DateDon
+                               WHERE id_donneur = @IdDonneur;
+                           """;
+
+        var rowsAffected = await connection.ExecuteAsync(sql, new
+        {
+            IdDonneur = idDonneur,
+            DateDon = dateDon
+        });
+
+        return rowsAffected > 0;
+    }
 }

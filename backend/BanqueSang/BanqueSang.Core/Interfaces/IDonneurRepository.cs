@@ -11,19 +11,16 @@ public interface IDonneurRepository
 
     /// <summary>
     /// Récupère un donneur à partir de son identifiant.
-    /// Retourne null si aucun donneur n'existe avec cet identifiant.
     /// </summary>
     Task<Donneur?> GetByIdAsync(int id);
 
     /// <summary>
     /// Ajoute un nouveau donneur dans la base de données.
-    /// Retourne l'identifiant généré automatiquement.
     /// </summary>
     Task<int> CreateAsync(Donneur donneur);
 
     /// <summary>
     /// Met à jour les informations d'un donneur existant.
-    /// Retourne true si la mise à jour a réussi.
     /// </summary>
     Task<bool> UpdateAsync(Donneur donneur);
 
@@ -31,4 +28,9 @@ public interface IDonneurRepository
     /// Met à jour uniquement le statut d'éligibilité d'un donneur.
     /// </summary>
     Task<bool> UpdateEligibiliteAsync(int idDonneur, string statutEligibilite);
+
+    /// <summary>
+    /// Met à jour la date du dernier don d'un donneur.
+    /// </summary>
+    Task<bool> UpdateDernierDonAsync(int idDonneur, DateTime dateDon);
 }

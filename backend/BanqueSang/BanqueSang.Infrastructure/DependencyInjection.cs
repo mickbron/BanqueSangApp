@@ -27,6 +27,10 @@ public static class DependencyInjection
         
         services.AddScoped<IDonneurRepository, DonneurRepository>();
         services.AddScoped<IDonneurService, DonneurService>();
+        
+        services.AddScoped<IDonRepository, DonRepository>();
+        services.AddScoped<ISangRepository, SangRepository>();
+        services.AddScoped<IDonService, DonService>();
 
         return services;
     }
