@@ -2,7 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Donneur, EligibiliteResult } from '../../shared/models/donneur.model';
+import {
+  CreateDonneurRequest,
+  Donneur,
+  EligibiliteResult
+} from '../../shared/models/donneur.model';
 
 @Injectable({
   providedIn: 'root'
@@ -20,10 +24,17 @@ export class DonneurService {
   }
 
   /**
-   * Récupère un donneur par son identifiant.
+   * Récupère un donneur à partir de son identifiant.
    */
   getById(id: number): Observable<Donneur> {
     return this.http.get<Donneur>(`${this.apiUrl}/${id}`);
+  }
+
+  /**
+   * Crée un nouveau donneur via l'API.
+   */
+  create(request: CreateDonneurRequest): Observable<{ idDonneur: number; message: string }> {
+    return this.http.post<{ idDonneur: number; message: string }>(this.apiUrl, request);
   }
 
   /**

@@ -5,8 +5,8 @@
       <p>Liste et vérification de l’éligibilité des donneurs de sang.</p>
     </div>
 
-    <button type="button" class="primary-button">
-      Nouveau donneur
+    <button type="button" class="primary-button" (click)="openDonneurForm()">
+      + Nouveau donneur
     </button>
   </header>
 
@@ -46,12 +46,17 @@
               <td>{{ donneur.donneurNom }}</td>
               <td>{{ donneur.donneurPrenom }}</td>
               <td>{{ donneur.donneurTelephone }}</td>
+
               <td>
                 <span class="blood-badge">
                   {{ donneur.donneurGroupeSanguin }}
                 </span>
               </td>
-              <td>{{ donneur.donneurDateNaissance | date: 'dd/MM/yyyy' }}</td>
+
+              <td>
+                {{ donneur.donneurDateNaissance | date: 'dd/MM/yyyy' }}
+              </td>
+
               <td>
                 @if (donneur.donneurDernierDon) {
                   {{ donneur.donneurDernierDon | date: 'dd/MM/yyyy' }}
@@ -59,16 +64,19 @@
                   Aucun
                 }
               </td>
+
               <td>
                 <span [class]="getEligibiliteClass(donneur.donneurStatutEligibilite)">
                   {{ donneur.donneurStatutEligibilite }}
                 </span>
               </td>
+
               <td>
                 <button
                   type="button"
                   class="secondary-button"
-                  (click)="verifierEligibilite(donneur)">
+                  (click)="verifierEligibilite(donneur)"
+                >
                   Vérifier
                 </button>
               </td>
@@ -83,5 +91,12 @@
         </tbody>
       </table>
     </div>
+  }
+
+  @if (showDonneurForm) {
+    <app-donneur-form
+      (closed)="closeDonneurForm()"
+      (donneurCreated)="onDonneurCreated()"
+    />
   }
 </div>

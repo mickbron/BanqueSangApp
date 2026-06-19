@@ -1,0 +1,131 @@
+<div class="modal-overlay">
+  <section class="modal-card" role="dialog" aria-modal="true">
+    <header class="modal-header">
+      <h2>Nouveau donneur</h2>
+
+      <button type="button" class="close-button" (click)="close()" aria-label="Fermer">
+        ×
+      </button>
+    </header>
+
+    @if (errorMessage) {
+      <div class="alert-error">
+        {{ errorMessage }}
+      </div>
+    }
+
+    <form [formGroup]="donneurForm" (ngSubmit)="onSubmit()">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="donneurNom">Nom *</label>
+          <input
+            id="donneurNom"
+            type="text"
+            formControlName="donneurNom"
+            aria-required="true"
+            [attr.aria-invalid]="isInvalid('donneurNom')"
+          />
+
+          @if (isInvalid('donneurNom')) {
+            <small>Le nom est obligatoire.</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="donneurPrenom">Prénom *</label>
+          <input
+            id="donneurPrenom"
+            type="text"
+            formControlName="donneurPrenom"
+            aria-required="true"
+            [attr.aria-invalid]="isInvalid('donneurPrenom')"
+          />
+
+          @if (isInvalid('donneurPrenom')) {
+            <small>Le prénom est obligatoire.</small>
+          }
+        </div>
+
+        <div class="form-group full-width">
+          <label for="donneurAdresse">Adresse *</label>
+          <input
+            id="donneurAdresse"
+            type="text"
+            formControlName="donneurAdresse"
+            aria-required="true"
+            [attr.aria-invalid]="isInvalid('donneurAdresse')"
+          />
+
+          @if (isInvalid('donneurAdresse')) {
+            <small>L’adresse est obligatoire.</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="donneurTelephone">Téléphone *</label>
+          <input
+            id="donneurTelephone"
+            type="tel"
+            formControlName="donneurTelephone"
+            placeholder="0488123456"
+            aria-required="true"
+            [attr.aria-invalid]="isInvalid('donneurTelephone')"
+          />
+
+          @if (isInvalid('donneurTelephone')) {
+            <small>Le téléphone est obligatoire.</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="donneurDateNaissance">Date de naissance *</label>
+          <input
+            id="donneurDateNaissance"
+            type="date"
+            formControlName="donneurDateNaissance"
+            aria-required="true"
+            [attr.aria-invalid]="isInvalid('donneurDateNaissance')"
+          />
+
+          @if (isInvalid('donneurDateNaissance')) {
+            <small>La date de naissance est obligatoire.</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="donneurGroupeSanguin">Groupe sanguin *</label>
+          <select
+            id="donneurGroupeSanguin"
+            formControlName="donneurGroupeSanguin"
+            aria-required="true"
+            [attr.aria-invalid]="isInvalid('donneurGroupeSanguin')"
+          >
+            <option value="">Sélectionner</option>
+
+            @for (groupe of groupesSanguins; track groupe) {
+              <option [value]="groupe">{{ groupe }}</option>
+            }
+          </select>
+
+          @if (isInvalid('donneurGroupeSanguin')) {
+            <small>Le groupe sanguin est obligatoire.</small>
+          }
+        </div>
+      </div>
+
+      <footer class="modal-actions">
+        <button type="button" class="cancel-button" (click)="close()">
+          Annuler
+        </button>
+
+        <button type="submit" class="submit-button" [disabled]="donneurForm.invalid || isSubmitting">
+          @if (isSubmitting) {
+            Enregistrement...
+          } @else {
+            Enregistrer le donneur
+          }
+        </button>
+      </footer>
+    </form>
+  </section>
+</div>

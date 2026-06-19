@@ -10,6 +10,17 @@ export interface Donneur {
   donneurDernierDon?: string | null;
 }
 
+export interface CreateDonneurRequest {
+  donneurNom: string;
+  donneurPrenom: string;
+  donneurAdresse: string;
+  donneurTelephone: string;
+  donneurDateNaissance: string;
+  donneurGroupeSanguin: string;
+  donneurStatutEligibilite: string;
+  donneurDernierDon?: string | null;
+}
+
 export interface EligibiliteResult {
   donneurId: number;
   eligible: boolean;

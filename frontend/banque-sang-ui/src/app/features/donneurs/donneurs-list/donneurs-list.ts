@@ -2,10 +2,11 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DonneurService } from '../../../core/services/donneur.service';
 import { Donneur } from '../../../shared/models/donneur.model';
+import { DonneurForm } from '../donneur-form/donneur-form';
 
 @Component({
   selector: 'app-donneurs-list',
-  imports: [CommonModule],
+  imports: [CommonModule, DonneurForm],
   templateUrl: './donneurs-list.html',
   styleUrl: './donneurs-list.css',
 })
@@ -16,11 +17,38 @@ export class DonneursList implements OnInit {
   isLoading = false;
   errorMessage = '';
   successMessage = '';
+  showDonneurForm = false;
 
   /**
    * Charge automatiquement la liste des donneurs quand la page s'ouvre.
    */
   ngOnInit(): void {
+    this.loadDonneurs();
+  }
+
+  /**
+   * Ouvre la modal de création d'un donneur.
+   */
+  openDonneurForm(): void {
+    this.errorMessage = '';
+    this.successMessage = '';
+    this.showDonneurForm = true;
+  }
+
+  /**
+   * Ferme la modal de création.
+   */
+  closeDonneurForm(): void {
+    this.showDonneurForm = false;
+  }
+
+  /**
+   * Méthode appelée après la création réussie d'un donneur.
+   * Elle ferme la modal et recharge la liste.
+   */
+  onDonneurCreated(): void {
+    this.showDonneurForm = false;
+    this.successMessage = 'Donneur créé avec succès.';
     this.loadDonneurs();
   }
 
