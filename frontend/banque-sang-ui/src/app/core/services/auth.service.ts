@@ -15,8 +15,8 @@ export class AuthService {
   constructor(private readonly http: HttpClient) {}
 
   /**
-   * Envoie le login et le mot de passe vers l'API.
-   * Si la connexion réussit, le token, le rôle et l'expiration sont sauvegardés en localStorage.
+   * Envoie les identifiants à l'API.
+   * Si l'authentification réussit, la session est sauvegardée dans le localStorage.
    */
   login(request: LoginRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${environment.apiUrl}/auth/login`, request).pipe(
@@ -27,7 +27,7 @@ export class AuthService {
   }
 
   /**
-   * Sauvegarde les informations de session dans le navigateur.
+   * Sauvegarde le token, le rôle et la date d'expiration dans le localStorage.
    */
   private saveSession(response: LoginResponse): void {
     localStorage.setItem(this.tokenKey, response.token);
@@ -36,7 +36,7 @@ export class AuthService {
   }
 
   /**
-   * Retourne le token JWT actuellement stocké.
+   * Retourne le token JWT stocké dans le navigateur.
    */
   getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
@@ -50,14 +50,38 @@ export class AuthService {
   }
 
   /**
-   * Vérifie si l'utilisateur possède un token.
+   * Vérifie si l'utilisateur est connecté.
+   * Un utilisateur est connecté uniquement s'il possède un token non expiré.
    */
   isLoggedIn(): boolean {
-    return this.getToken() !== null;
+    const token = this.getToken();
+    const expiration = localStorage.getItem(this.expirationKey);
+
+    if (!token || !expiration) {
+      return false;
+    }
+
+    const expirationDate = new Date(expiration);
+    const now = new Date();
+
+    return expirationDate > now;
   }
 
   /**
-   * Déconnecte l'utilisateur en supprimant les informations de session.
+   * Vérifie si l'utilisateur possède l'un des rôles autorisés.
+   */
+  hasRole(allowedRoles: string[]): boolean {
+    const role = this.getRole();
+
+    if (!role) {
+      return false;
+    }
+
+    return allowedRoles.includes(role);
+  }
+
+  /**
+   * Supprime les informations de session.
    */
   logout(): void {
     localStorage.removeItem(this.tokenKey);
