@@ -1,0 +1,138 @@
+<div class="page-container">
+  <header class="page-header">
+    <div>
+      <h1>Tests biologiques</h1>
+      <p>Enregistrement, suivi et modification des analyses de laboratoire.</p>
+    </div>
+
+    <button type="button" class="primary-button" (click)="openTestForm()">
+      + Nouveau test
+    </button>
+  </header>
+
+  @if (successMessage) {
+    <div class="alert alert-success">
+      {{ successMessage }}
+    </div>
+  }
+
+  @if (errorMessage) {
+    <div class="alert alert-error">
+      {{ errorMessage }}
+    </div>
+  }
+
+  <section class="summary-grid">
+    <div class="summary-card">
+      <span>Total résultats</span>
+      <strong>{{ resultats.length }}</strong>
+    </div>
+
+    <div class="summary-card">
+      <span>Types de tests</span>
+      <strong>{{ tests.length }}</strong>
+    </div>
+
+    <div class="summary-card">
+      <span>Négatifs</span>
+      <strong>{{ totalNegatifs }}</strong>
+    </div>
+
+    <div class="summary-card">
+      <span>Positifs</span>
+      <strong>{{ totalPositifs }}</strong>
+    </div>
+  </section>
+
+  <section class="section-card">
+    <h2>Types de tests disponibles</h2>
+
+    <div class="test-type-list">
+      @for (test of tests; track test.idTest) {
+        <span class="test-type-badge">
+          {{ test.testNom }}
+        </span>
+      } @empty {
+        <p class="empty-message">Aucun type de test disponible.</p>
+      }
+    </div>
+  </section>
+
+  <section class="section-card">
+    <h2>Résultats enregistrés</h2>
+
+    @if (isLoading) {
+      <p>Chargement des résultats...</p>
+    } @else {
+      <div class="table-card">
+        <table>
+          <thead>
+          <tr>
+            <th>Code</th>
+            <th>Poche</th>
+            <th>Test</th>
+            <th>Personnel</th>
+            <th>Date / heure</th>
+            <th>Résultat</th>
+            <th>Statut</th>
+            <th>Commentaire</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+
+          <tbody>
+            @for (resultat of resultats; track resultat.idResultatTest) {
+              <tr>
+                <td>#{{ resultat.idResultatTest }}</td>
+                <td>#{{ resultat.idSang }}</td>
+                <td>{{ resultat.testNom }}</td>
+                <td>{{ resultat.personnelPrenom }} {{ resultat.personnelNom }}</td>
+                <td>{{ resultat.dateTest | date: 'dd/MM/yyyy HH:mm' }}</td>
+
+                <td>
+                  <span [class]="getResultatClass(resultat.resultat)">
+                    {{ resultat.resultat }}
+                  </span>
+                </td>
+
+                <td>
+                  <span [class]="getStatutClass(resultat.statutTest)">
+                    {{ resultat.statutTest }}
+                  </span>
+                </td>
+
+                <td>
+                  {{ resultat.commentaire || '-' }}
+                </td>
+
+                <td>
+                  <button
+                    type="button"
+                    class="secondary-button"
+                    (click)="editResultat(resultat)"
+                  >
+                    Modifier
+                  </button>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="9" class="empty-message">
+                  Aucun résultat de test enregistré.
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </section>
+
+  @if (showTestForm) {
+    <app-test-form
+      [resultatToEdit]="selectedResultat"
+      (closed)="closeTestForm()"
+      (testCreated)="onTestCreated()"
+    />
+  }
+</div>

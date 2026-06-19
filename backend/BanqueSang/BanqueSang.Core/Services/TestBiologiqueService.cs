@@ -136,4 +136,43 @@ public class TestBiologiqueService : ITestBiologiqueService
         await _donRepository.UpdateStatutAsync(donId.Value, "EN_ATTENTE");
         await _sangRepository.UpdateDisponibiliteAsync(idSang, false);
     }
+    
+    /// <summary>
+    /// Modifie un résultat de test biologique existant.
+    /// Après modification, le système recalcule automatiquement
+    /// le statut du don et la disponibilité de la poche concernée.
+    /// </summary>
+    public async Task<bool> ModifierResultatAsync(
+        int idResultatTest,
+        string resultat,
+        string? commentaire,
+        string statutTest)
+    {
+        var resultatsAutorises = new[] { "NEGATIF", "POSITIF", "EN_ATTENTE" };
+        var statutsAutorises = new[] { "VALIDE", "REJETE", "EN_ATTENTE" };
+
+        if (!resultatsAutorises.Contains(resultat))
+            throw new ArgumentException("Le résultat doit être NEGATIF, POSITIF ou EN_ATTENTE.");
+
+        if (!statutsAutorises.Contains(statutTest))
+            throw new ArgumentException("Le statut doit être VALIDE, REJETE ou EN_ATTENTE.");
+
+        var existingResultat = await _resultatTestRepository.GetByIdAsync(idResultatTest);
+
+        if (existingResultat is null)
+            throw new KeyNotFoundException("Résultat de test introuvable.");
+
+        existingResultat.Resultat = resultat;
+        existingResultat.Commentaire = commentaire;
+        existingResultat.StatutTest = statutTest;
+
+        var updated = await _resultatTestRepository.UpdateAsync(existingResultat);
+
+        if (!updated)
+            return false;
+
+        await MettreAJourStatutPocheEtDonAsync(existingResultat.IdSang);
+
+        return true;
+    }
 }

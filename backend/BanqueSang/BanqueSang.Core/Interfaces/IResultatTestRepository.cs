@@ -24,4 +24,14 @@ public interface IResultatTestRepository
     /// Crée un nouveau résultat de test biologique.
     /// </summary>
     Task<int> CreateAsync(ResultatTest resultatTest);
+    
+    /// <summary>
+    /// Récupère un résultat de test par son identifiant.
+    /// </summary>
+    Task<ResultatTest?> GetByIdAsync(int idResultatTest);
+
+    /// <summary>
+    /// Met à jour un résultat de test existant.
+    /// </summary>
+    Task<bool> UpdateAsync(ResultatTest resultatTest);
 }

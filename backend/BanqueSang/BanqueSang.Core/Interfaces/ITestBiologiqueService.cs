@@ -19,4 +19,9 @@ public interface ITestBiologiqueService
     /// Soumet un résultat de test biologique pour une poche de sang.
     /// </summary>
     Task<int> SoumettreResultatAsync(ResultatTest resultatTest);
+    
+    /// <summary>
+    /// Modifie un résultat de test biologique existant.
+    /// </summary>
+    Task<bool> ModifierResultatAsync(int idResultatTest, string resultat, string? commentaire, string statutTest);
 }

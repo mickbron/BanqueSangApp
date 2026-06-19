@@ -1,0 +1,150 @@
+<div class="modal-overlay">
+  <section class="modal-card" role="dialog" aria-modal="true">
+    <header class="modal-header">
+      <h2>
+        @if (resultatToEdit) {
+          Modifier le test biologique
+        } @else {
+          Nouveau test biologique
+        }
+      </h2>
+
+      <button type="button" class="close-button" (click)="close()" aria-label="Fermer">
+        ×
+      </button>
+    </header>
+
+    @if (errorMessage) {
+      <div class="alert-error">
+        {{ errorMessage }}
+      </div>
+    }
+
+    <form [formGroup]="testForm" (ngSubmit)="onSubmit()">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="idPersonnel">Personnel *</label>
+          <input
+            id="idPersonnel"
+            type="number"
+            formControlName="idPersonnel"
+            min="1"
+            aria-required="true"
+            [attr.aria-invalid]="isInvalid('idPersonnel')"
+          />
+
+          @if (isInvalid('idPersonnel')) {
+            <small>Le personnel est obligatoire.</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="idSang">Poche de sang *</label>
+          <select
+            id="idSang"
+            formControlName="idSang"
+            aria-required="true"
+            [attr.aria-invalid]="isInvalid('idSang')"
+          >
+            <option value="">Sélectionner une poche</option>
+
+            @for (poche of poches; track poche.idSang) {
+              <option [value]="poche.idSang">
+                Poche #{{ poche.idSang }} — {{ poche.sangTypeComposant }} — Don #{{ poche.idDon }}
+              </option>
+            }
+          </select>
+
+          @if (isInvalid('idSang')) {
+            <small>La poche de sang est obligatoire.</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="idTest">Type de test *</label>
+          <select
+            id="idTest"
+            formControlName="idTest"
+            aria-required="true"
+            [attr.aria-invalid]="isInvalid('idTest')"
+          >
+            <option value="">Sélectionner un test</option>
+
+            @for (test of tests; track test.idTest) {
+              <option [value]="test.idTest">
+                {{ test.testNom }}
+              </option>
+            }
+          </select>
+
+          @if (isInvalid('idTest')) {
+            <small>Le type de test est obligatoire.</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="dateTest">Date / heure *</label>
+          <input
+            id="dateTest"
+            type="datetime-local"
+            formControlName="dateTest"
+            aria-required="true"
+            [attr.aria-invalid]="isInvalid('dateTest')"
+          />
+
+          @if (isInvalid('dateTest')) {
+            <small>La date du test est obligatoire.</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="resultat">Résultat *</label>
+          <select
+            id="resultat"
+            formControlName="resultat"
+            aria-required="true"
+            [attr.aria-invalid]="isInvalid('resultat')"
+          >
+            @for (resultat of resultats; track resultat) {
+              <option [value]="resultat">
+                {{ resultat }}
+              </option>
+            }
+          </select>
+
+          @if (isInvalid('resultat')) {
+            <small>Le résultat est obligatoire.</small>
+          }
+        </div>
+
+        <div class="form-group full-width">
+          <label for="commentaire">Commentaire</label>
+          <textarea
+            id="commentaire"
+            formControlName="commentaire"
+            rows="4"
+            placeholder="Commentaire optionnel"
+          ></textarea>
+        </div>
+      </div>
+
+      <footer class="modal-actions">
+        <button type="button" class="cancel-button" (click)="close()">
+          Annuler
+        </button>
+
+        <button type="submit" class="submit-button" [disabled]="testForm.invalid || isSubmitting">
+          @if (isSubmitting) {
+            Enregistrement...
+          } @else {
+            @if (resultatToEdit) {
+              Modifier le test
+            } @else {
+              Enregistrer le test
+            }
+          }
+        </button>
+      </footer>
+    </form>
+  </section>
+</div>

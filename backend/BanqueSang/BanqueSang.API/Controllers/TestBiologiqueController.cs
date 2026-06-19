@@ -111,4 +111,51 @@ public class TestBiologiqueController : ControllerBase
             });
         }
     }
+    
+    /// <summary>
+    /// Modifie un résultat de test biologique existant.
+    /// Après modification, le système recalcule automatiquement
+    /// le statut du don et la disponibilité de la poche de sang.
+    /// </summary>
+    [HttpPut("resultats/{id:int}")]
+    [Authorize(Roles = "MEDECIN,ADMINISTRATEUR")]
+    public async Task<IActionResult> UpdateResultat(int id, [FromBody] UpdateResultatTestRequestDto request)
+    {
+        try
+        {
+            var updated = await _testBiologiqueService.ModifierResultatAsync(
+                id,
+                request.Resultat,
+                request.Commentaire,
+                request.StatutTest
+            );
+
+            if (!updated)
+            {
+                return NotFound(new
+                {
+                    message = "Résultat de test introuvable."
+                });
+            }
+
+            return Ok(new
+            {
+                message = "Résultat de test modifié avec succès."
+            });
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new
+            {
+                message = ex.Message
+            });
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new
+            {
+                message = ex.Message
+            });
+        }
+    }
 }

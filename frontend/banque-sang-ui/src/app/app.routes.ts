@@ -5,6 +5,7 @@ import { Dashboard } from './features/dashboard/dashboard/dashboard';
 import { DonneursList } from './features/donneurs/donneurs-list/donneurs-list';
 import { DonsList } from './features/dons/dons-list/dons-list';
 import { StockDashboard } from './features/stock/stock-dashboard/stock-dashboard';
+import { TestsList } from './features/tests/tests-list/tests-list';
 import { Layout } from './shared/components/layout/layout';
 
 
@@ -49,6 +50,14 @@ export const routes: Routes = [
       {
         path: 'stock',
         component: StockDashboard
+      },
+      {
+        path: 'tests',
+        component: TestsList,
+        canActivate: [roleGuard],
+        data: {
+          roles: ['ADMINISTRATEUR', 'TECHNICIEN', 'MEDECIN']
+        }
       }
     ]
   },

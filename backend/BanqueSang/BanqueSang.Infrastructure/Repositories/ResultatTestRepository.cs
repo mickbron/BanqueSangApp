@@ -126,4 +126,53 @@ public class ResultatTestRepository : IResultatTestRepository
 
         return await connection.ExecuteScalarAsync<int>(sql, resultatTest);
     }
+    
+    /// <summary>
+    /// Récupère un résultat de test par son identifiant.
+    /// </summary>
+    public async Task<ResultatTest?> GetByIdAsync(int idResultatTest)
+    {
+        using var connection = _connectionFactory.CreateConnection();
+
+        const string sql = """
+                               SELECT
+                                   id_resultat_test AS IdResultatTest,
+                                   id_personnel AS IdPersonnel,
+                                   id_sang AS IdSang,
+                                   id_test AS IdTest,
+                                   date_test AS DateTest,
+                                   resultat AS Resultat,
+                                   commentaire AS Commentaire,
+                                   statut_test AS StatutTest
+                               FROM RESULTAT_TEST
+                               WHERE id_resultat_test = @IdResultatTest
+                               LIMIT 1;
+                           """;
+
+        return await connection.QueryFirstOrDefaultAsync<ResultatTest>(sql, new
+        {
+            IdResultatTest = idResultatTest
+        });
+    }
+
+    /// <summary>
+    /// Met à jour le résultat, le commentaire et le statut d'un test biologique.
+    /// </summary>
+    public async Task<bool> UpdateAsync(ResultatTest resultatTest)
+    {
+        using var connection = _connectionFactory.CreateConnection();
+
+        const string sql = """
+                               UPDATE RESULTAT_TEST
+                               SET
+                                   resultat = @Resultat,
+                                   commentaire = @Commentaire,
+                                   statut_test = @StatutTest
+                               WHERE id_resultat_test = @IdResultatTest;
+                           """;
+
+        var rowsAffected = await connection.ExecuteAsync(sql, resultatTest);
+
+        return rowsAffected > 0;
+    }
 }
