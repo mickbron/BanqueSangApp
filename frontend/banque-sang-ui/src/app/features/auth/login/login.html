@@ -1,0 +1,56 @@
+<div class="login-page">
+  <form class="login-card" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="logo">
+      BS
+    </div>
+
+    <h1>Système de gestion de banque de sang</h1>
+    <p class="subtitle">Connexion au système</p>
+
+    @if (errorMessage) {
+      <div class="alert-error">
+        {{ errorMessage }}
+      </div>
+    }
+
+    <div class="form-group">
+      <label for="login">Identifiant</label>
+      <input
+        id="login"
+        type="text"
+        formControlName="login"
+        placeholder="Entrez votre identifiant"
+        aria-required="true"
+        [attr.aria-invalid]="loginInvalid"
+      />
+
+      @if (loginInvalid) {
+        <small>L'identifiant est obligatoire.</small>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="password">Mot de passe</label>
+      <input
+        id="password"
+        type="password"
+        formControlName="password"
+        placeholder="Entrez votre mot de passe"
+        aria-required="true"
+        [attr.aria-invalid]="passwordInvalid"
+      />
+
+      @if (passwordInvalid) {
+        <small>Le mot de passe est obligatoire.</small>
+      }
+    </div>
+
+    <button type="submit" [disabled]="loginForm.invalid || isLoading">
+      @if (isLoading) {
+        Connexion...
+      } @else {
+        Se connecter
+      }
+    </button>
+  </form>
+</div>
