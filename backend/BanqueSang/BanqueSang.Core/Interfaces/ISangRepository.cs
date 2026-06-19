@@ -25,4 +25,19 @@ public interface ISangRepository
     /// Récupère les poches proches de la péremption ou déjà périmées.
     /// </summary>
     Task<IEnumerable<Sang>> GetAlertesAsync();
+    
+    /// <summary>
+    /// Vérifie si une poche de sang existe.
+    /// </summary>
+    Task<bool> ExistsAsync(int idSang);
+
+    /// <summary>
+    /// Met à jour la disponibilité d'une poche de sang.
+    /// </summary>
+    Task<bool> UpdateDisponibiliteAsync(int idSang, bool disponible);
+
+    /// <summary>
+    /// Récupère le don associé à une poche de sang.
+    /// </summary>
+    Task<int?> GetDonIdBySangIdAsync(int idSang);
 }

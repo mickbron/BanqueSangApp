@@ -23,4 +23,9 @@ public interface IDonRepository
     /// Met à jour la date du dernier don d'un donneur.
     /// </summary>
     Task<bool> UpdateDernierDonAsync(int idDonneur, DateTime dateDon);
+    
+    /// <summary>
+    /// Met à jour le statut d'un don.
+    /// </summary>
+    Task<bool> UpdateStatutAsync(int idDon, string statut);
 }

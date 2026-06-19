@@ -33,6 +33,10 @@ public static class DependencyInjection
         services.AddScoped<IDonService, DonService>();
         
         services.AddScoped<IStockService, StockService>();
+        
+        services.AddScoped<ITestRepository, TestRepository>();
+        services.AddScoped<IResultatTestRepository, ResultatTestRepository>();
+        services.AddScoped<ITestBiologiqueService, TestBiologiqueService>();
 
         return services;
     }

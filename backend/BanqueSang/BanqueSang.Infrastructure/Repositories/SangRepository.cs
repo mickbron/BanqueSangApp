@@ -168,4 +168,67 @@ public class SangRepository : ISangRepository
 
         return await connection.QueryAsync<Sang>(sql);
     }
+    
+    /// <summary>
+    /// Vérifie si une poche de sang existe.
+    /// </summary>
+    public async Task<bool> ExistsAsync(int idSang)
+    {
+        using var connection = _connectionFactory.CreateConnection();
+
+        const string sql = """
+                               SELECT COUNT(1)
+                               FROM SANG
+                               WHERE id_sang = @IdSang;
+                           """;
+
+        var count = await connection.ExecuteScalarAsync<int>(sql, new
+        {
+            IdSang = idSang
+        });
+
+        return count > 0;
+    }
+
+    /// <summary>
+    /// Met à jour la disponibilité d'une poche de sang.
+    /// </summary>
+    public async Task<bool> UpdateDisponibiliteAsync(int idSang, bool disponible)
+    {
+        using var connection = _connectionFactory.CreateConnection();
+
+        const string sql = """
+                               UPDATE SANG
+                               SET sang_disponible = @Disponible
+                               WHERE id_sang = @IdSang;
+                           """;
+
+        var rowsAffected = await connection.ExecuteAsync(sql, new
+        {
+            IdSang = idSang,
+            Disponible = disponible
+        });
+
+        return rowsAffected > 0;
+    }
+
+    /// <summary>
+    /// Récupère l'identifiant du don associé à une poche de sang.
+    /// </summary>
+    public async Task<int?> GetDonIdBySangIdAsync(int idSang)
+    {
+        using var connection = _connectionFactory.CreateConnection();
+
+        const string sql = """
+                               SELECT id_don
+                               FROM SANG
+                               WHERE id_sang = @IdSang
+                               LIMIT 1;
+                           """;
+
+        return await connection.QueryFirstOrDefaultAsync<int?>(sql, new
+        {
+            IdSang = idSang
+        });
+    }
 }

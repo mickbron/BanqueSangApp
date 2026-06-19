@@ -113,4 +113,26 @@ public class DonRepository : IDonRepository
 
         return rowsAffected > 0;
     }
+    
+    /// <summary>
+    /// Met à jour le statut d'un don.
+    /// </summary>
+    public async Task<bool> UpdateStatutAsync(int idDon, string statut)
+    {
+        using var connection = _connectionFactory.CreateConnection();
+
+        const string sql = """
+                               UPDATE DON
+                               SET don_statut = @Statut
+                               WHERE id_don = @IdDon;
+                           """;
+
+        var rowsAffected = await connection.ExecuteAsync(sql, new
+        {
+            IdDon = idDon,
+            Statut = statut
+        });
+
+        return rowsAffected > 0;
+    }
 }
