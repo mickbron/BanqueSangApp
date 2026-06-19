@@ -4,6 +4,7 @@ import { Login } from './features/auth/login/login';
 import { Dashboard } from './features/dashboard/dashboard/dashboard';
 import { DonneursList } from './features/donneurs/donneurs-list/donneurs-list';
 import { DonsList } from './features/dons/dons-list/dons-list';
+import { StockDashboard } from './features/stock/stock-dashboard/stock-dashboard';
 import { Layout } from './shared/components/layout/layout';
 
 
@@ -44,6 +45,10 @@ export const routes: Routes = [
         data: {
           roles: ['ADMINISTRATEUR', 'TECHNICIEN']
         }
+      },
+      {
+        path: 'stock',
+        component: StockDashboard
       }
     ]
   },

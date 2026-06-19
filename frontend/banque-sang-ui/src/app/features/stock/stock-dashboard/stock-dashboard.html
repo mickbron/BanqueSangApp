@@ -1,0 +1,148 @@
+<div class="page-container">
+  <header class="page-header">
+    <div>
+      <h1>Gestion du stock de sang</h1>
+      <p>Inventaire des poches, disponibilité et alertes de péremption.</p>
+    </div>
+
+    <button type="button" class="secondary-button" (click)="loadStock()">
+      Rafraîchir
+    </button>
+  </header>
+
+  @if (errorMessage) {
+    <div class="alert alert-error">
+      {{ errorMessage }}
+    </div>
+  }
+
+  <section class="kpi-grid">
+    <div class="kpi-card">
+      <span>Total</span>
+      <strong>{{ totalPoches }}</strong>
+    </div>
+
+    <div class="kpi-card">
+      <span>Disponibles</span>
+      <strong>{{ totalDisponibles }}</strong>
+    </div>
+
+    <div class="kpi-card">
+      <span>Indisponibles</span>
+      <strong>{{ totalIndisponibles }}</strong>
+    </div>
+
+    <div class="kpi-card">
+      <span>Périmées</span>
+      <strong>{{ totalPerimees }}</strong>
+    </div>
+
+    <div class="kpi-card">
+      <span>Alertes</span>
+      <strong>{{ alertes.length }}</strong>
+    </div>
+  </section>
+
+  <section class="section-card">
+    <div class="section-header">
+      <h2>Stock par groupe sanguin</h2>
+    </div>
+
+    <div class="blood-grid">
+      @for (stock of stockGroupes; track stock.groupeSanguin) {
+        <article class="blood-card">
+          <div class="blood-title">{{ stock.groupeSanguin }}</div>
+
+          <div class="blood-stats">
+            <span>Total : {{ stock.total }}</span>
+            <span>Disponibles : {{ stock.disponibles }}</span>
+            <span>Indisponibles : {{ stock.indisponibles }}</span>
+            <span>Périmées : {{ stock.perimees }}</span>
+            <span>Proches péremption : {{ stock.prochesPeremption }}</span>
+          </div>
+        </article>
+      } @empty {
+        <p class="empty-message">Aucun stock groupé disponible.</p>
+      }
+    </div>
+  </section>
+
+  <section class="section-card">
+    <div class="section-header">
+      <h2>Alertes de péremption</h2>
+    </div>
+
+    @if (alertes.length === 0) {
+      <p class="empty-message">Aucune alerte de péremption.</p>
+    } @else {
+      <div class="alert-list">
+        @for (poche of alertes; track poche.idSang) {
+          <div class="alert-row">
+            <span>Poche #{{ poche.idSang }}</span>
+            <span>{{ poche.sangTypeComposant }}</span>
+            <span>{{ poche.sangDatePeremption | date: 'dd/MM/yyyy' }}</span>
+            <span [class]="getPeremptionClass(poche.sangDatePeremption)">
+              {{ getPeremptionLabel(poche.sangDatePeremption) }}
+            </span>
+          </div>
+        }
+      </div>
+    }
+  </section>
+
+  <section class="section-card">
+    <div class="section-header">
+      <h2>Liste des poches</h2>
+    </div>
+
+    @if (isLoading) {
+      <p>Chargement du stock...</p>
+    } @else {
+      <div class="table-card">
+        <table>
+          <thead>
+          <tr>
+            <th>ID poche</th>
+            <th>ID don</th>
+            <th>Centre</th>
+            <th>Composant</th>
+            <th>Création</th>
+            <th>Péremption</th>
+            <th>Disponibilité</th>
+            <th>État</th>
+          </tr>
+          </thead>
+
+          <tbody>
+            @for (poche of poches; track poche.idSang) {
+              <tr>
+                <td>#{{ poche.idSang }}</td>
+                <td>#{{ poche.idDon }}</td>
+                <td>{{ poche.idCentre ?? 'Non défini' }}</td>
+                <td>{{ poche.sangTypeComposant }}</td>
+                <td>{{ poche.sangDateCreation | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ poche.sangDatePeremption | date: 'dd/MM/yyyy' }}</td>
+                <td>
+                  <span [class]="getDisponibiliteClass(poche.sangDisponible)">
+                    {{ poche.sangDisponible ? 'Disponible' : 'Indisponible' }}
+                  </span>
+                </td>
+                <td>
+                  <span [class]="getPeremptionClass(poche.sangDatePeremption)">
+                    {{ getPeremptionLabel(poche.sangDatePeremption) }}
+                  </span>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="8" class="empty-message">
+                  Aucune poche de sang enregistrée.
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </section>
+</div>
