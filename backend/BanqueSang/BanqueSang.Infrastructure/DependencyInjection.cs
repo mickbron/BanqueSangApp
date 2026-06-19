@@ -24,6 +24,9 @@ public static class DependencyInjection
         services.AddScoped<IJwtTokenService, JwtTokenService>();
 
         services.AddScoped<IAuthService, AuthService>();
+        
+        services.AddScoped<IDonneurRepository, DonneurRepository>();
+        services.AddScoped<IDonneurService, DonneurService>();
 
         return services;
     }
