@@ -31,6 +31,8 @@ public static class DependencyInjection
         services.AddScoped<IDonRepository, DonRepository>();
         services.AddScoped<ISangRepository, SangRepository>();
         services.AddScoped<IDonService, DonService>();
+        
+        services.AddScoped<IStockService, StockService>();
 
         return services;
     }
