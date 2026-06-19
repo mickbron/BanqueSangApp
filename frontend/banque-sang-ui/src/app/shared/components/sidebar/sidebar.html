@@ -1,0 +1,21 @@
+<aside class="sidebar">
+  <div class="brand">
+    <span class="brand-icon">🩸</span>
+    <span>Banque de Sang</span>
+  </div>
+
+  <nav class="menu">
+    @for (item of menuItems; track item.route) {
+      @if (canShow(item)) {
+        <a
+          [routerLink]="item.route"
+          routerLinkActive="active"
+          class="menu-link"
+        >
+          <span>{{ item.icon }}</span>
+          <span>{{ item.label }}</span>
+        </a>
+      }
+    }
+  </nav>
+</aside>

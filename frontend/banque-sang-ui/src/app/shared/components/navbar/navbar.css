@@ -1,0 +1,38 @@
+.navbar {
+  height: 64px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.role-badge {
+  background: #eef2ff;
+  color: #3730a3;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 4px;
+}
+
+.logout-button {
+  background: #b91c1c;
+  color: #ffffff;
+  border: none;
+  padding: 10px 16px;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.logout-button:hover {
+  background: #991b1b;
+}

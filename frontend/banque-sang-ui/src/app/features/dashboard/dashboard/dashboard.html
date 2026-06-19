@@ -1,9 +1,21 @@
-<h1>Tableau de bord</h1>
+<section class="dashboard-page">
+  <h1>Tableau de bord</h1>
+  <p>Bienvenue dans le système de gestion de banque de sang.</p>
 
-<p>Bienvenue dans le système de gestion de banque de sang.</p>
+  <div class="cards">
+    <a routerLink="/donneurs" class="card">
+      <h2>Donneurs</h2>
+      <p>Consulter et gérer les donneurs.</p>
+    </a>
 
-<p>Rôle connecté : {{ role }}</p>
+    <div class="card">
+      <h2>Stock</h2>
+      <p>Suivre les poches de sang disponibles.</p>
+    </div>
 
-<button type="button" (click)="logout()">
-  Se déconnecter
-</button>
+    <div class="card">
+      <h2>Tests</h2>
+      <p>Suivre les tests biologiques.</p>
+    </div>
+  </div>
+</section>

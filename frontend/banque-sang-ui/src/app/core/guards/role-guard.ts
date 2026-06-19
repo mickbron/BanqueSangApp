@@ -3,8 +3,7 @@ import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
 /**
- * Guard qui vérifie le rôle de l'utilisateur connecté.
- * Les rôles autorisés sont définis dans la propriété data.roles de la route.
+ * Vérifie si l'utilisateur connecté possède le rôle autorisé pour la route.
  */
 export const roleGuard: CanActivateFn = (route) => {
   const authService = inject(AuthService);

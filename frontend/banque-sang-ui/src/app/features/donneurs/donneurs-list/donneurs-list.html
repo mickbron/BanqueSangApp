@@ -1,0 +1,87 @@
+<div class="page-container">
+  <header class="page-header">
+    <div>
+      <h1>Gestion des donneurs</h1>
+      <p>Liste et vérification de l’éligibilité des donneurs de sang.</p>
+    </div>
+
+    <button type="button" class="primary-button">
+      Nouveau donneur
+    </button>
+  </header>
+
+  @if (successMessage) {
+    <div class="alert alert-success">
+      {{ successMessage }}
+    </div>
+  }
+
+  @if (errorMessage) {
+    <div class="alert alert-error">
+      {{ errorMessage }}
+    </div>
+  }
+
+  @if (isLoading) {
+    <p>Chargement des donneurs...</p>
+  } @else {
+    <div class="table-card">
+      <table>
+        <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Prénom</th>
+          <th>Téléphone</th>
+          <th>Groupe</th>
+          <th>Date naissance</th>
+          <th>Dernier don</th>
+          <th>Éligibilité</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+          @for (donneur of donneurs; track donneur.idDonneur) {
+            <tr>
+              <td>{{ donneur.donneurNom }}</td>
+              <td>{{ donneur.donneurPrenom }}</td>
+              <td>{{ donneur.donneurTelephone }}</td>
+              <td>
+                <span class="blood-badge">
+                  {{ donneur.donneurGroupeSanguin }}
+                </span>
+              </td>
+              <td>{{ donneur.donneurDateNaissance | date: 'dd/MM/yyyy' }}</td>
+              <td>
+                @if (donneur.donneurDernierDon) {
+                  {{ donneur.donneurDernierDon | date: 'dd/MM/yyyy' }}
+                } @else {
+                  Aucun
+                }
+              </td>
+              <td>
+                <span [class]="getEligibiliteClass(donneur.donneurStatutEligibilite)">
+                  {{ donneur.donneurStatutEligibilite }}
+                </span>
+              </td>
+              <td>
+                <button
+                  type="button"
+                  class="secondary-button"
+                  (click)="verifierEligibilite(donneur)">
+                  Vérifier
+                </button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="8" class="empty-message">
+                Aucun donneur trouvé.
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

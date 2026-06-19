@@ -1,24 +1,10 @@
-import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from '../../../core/services/auth.service';
+import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
-export class Dashboard {
-  private readonly authService = inject(AuthService);
-  private readonly router = inject(Router);
-
-  role = this.authService.getRole();
-
-  /**
-   * Déconnecte l'utilisateur et le redirige vers la page login.
-   */
-  logout(): void {
-    this.authService.logout();
-    this.router.navigate(['/login']);
-  }
-}
+export class Dashboard {}
