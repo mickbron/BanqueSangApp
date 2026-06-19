@@ -1,0 +1,123 @@
+<div class="modal-overlay">
+  <section class="modal-card" role="dialog" aria-modal="true">
+    <header class="modal-header">
+      <h2>Enregistrer un don</h2>
+
+      <button type="button" class="close-button" (click)="close()" aria-label="Fermer">
+        ×
+      </button>
+    </header>
+
+    @if (errorMessage) {
+      <div class="alert-error">
+        {{ errorMessage }}
+      </div>
+    }
+
+    <form [formGroup]="donForm" (ngSubmit)="onSubmit()">
+      <div class="form-grid">
+        <div class="form-group full-width">
+          <label for="idDonneur">Donneur *</label>
+          <select
+            id="idDonneur"
+            formControlName="idDonneur"
+            aria-required="true"
+            [attr.aria-invalid]="isInvalid('idDonneur')"
+          >
+            <option value="">Sélectionner un donneur</option>
+
+            @for (donneur of donneurs; track donneur.idDonneur) {
+              <option [value]="donneur.idDonneur">
+                {{ donneur.donneurNom }} {{ donneur.donneurPrenom }} — {{ donneur.donneurGroupeSanguin }} — {{ donneur.donneurStatutEligibilite }}
+              </option>
+            }
+          </select>
+
+          @if (isInvalid('idDonneur')) {
+            <small>Le donneur est obligatoire.</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="idCentre">Centre de collecte *</label>
+          <select
+            id="idCentre"
+            formControlName="idCentre"
+            aria-required="true"
+            [attr.aria-invalid]="isInvalid('idCentre')"
+          >
+            <option value="1">Centre Principal Bruxelles</option>
+            <option value="2">Centre Nord</option>
+          </select>
+
+          @if (isInvalid('idCentre')) {
+            <small>Le centre est obligatoire.</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="donDate">Date du don *</label>
+          <input
+            id="donDate"
+            type="date"
+            formControlName="donDate"
+            aria-required="true"
+            [attr.aria-invalid]="isInvalid('donDate')"
+          />
+
+          @if (isInvalid('donDate')) {
+            <small>La date du don est obligatoire.</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="donVolumeMl">Volume en ml *</label>
+          <input
+            id="donVolumeMl"
+            type="number"
+            formControlName="donVolumeMl"
+            min="1"
+            aria-required="true"
+            [attr.aria-invalid]="isInvalid('donVolumeMl')"
+          />
+
+          @if (isInvalid('donVolumeMl')) {
+            <small>Le volume doit être supérieur à zéro.</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="sangTypeComposant">Type de composant *</label>
+          <select
+            id="sangTypeComposant"
+            formControlName="sangTypeComposant"
+            aria-required="true"
+            [attr.aria-invalid]="isInvalid('sangTypeComposant')"
+          >
+            @for (type of typesComposants; track type.value) {
+              <option [value]="type.value">{{ type.label }}</option>
+            }
+          </select>
+
+          @if (isInvalid('sangTypeComposant')) {
+            <small>Le type de composant est obligatoire.</small>
+          }
+        </div>
+      </div>
+
+      <footer class="modal-actions">
+        <button type="button" class="cancel-button" (click)="close()">
+          Annuler
+        </button>
+
+        <button type="submit" class="submit-button" [disabled]="donForm.invalid || isSubmitting">
+          @if (isSubmitting) {
+            Enregistrement...
+          } @else {
+            Enregistrer le don
+          }
+        </button>
+      </footer>
+    </form>
+  </section>
+</div>
