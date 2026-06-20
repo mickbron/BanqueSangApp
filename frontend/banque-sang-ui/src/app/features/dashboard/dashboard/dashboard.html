@@ -1,21 +1,107 @@
-<section class="dashboard-page">
-  <h1>Tableau de bord</h1>
-  <p>Bienvenue dans le système de gestion de banque de sang.</p>
-
-  <div class="cards">
-    <a routerLink="/donneurs" class="card">
-      <h2>Donneurs</h2>
-      <p>Consulter et gérer les donneurs.</p>
-    </a>
-
-    <div class="card">
-      <h2>Stock</h2>
-      <p>Suivre les poches de sang disponibles.</p>
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <div>
+      <h1>Tableau de bord</h1>
+      <p>Vue globale du système de gestion de banque de sang.</p>
     </div>
 
-    <div class="card">
-      <h2>Tests</h2>
-      <p>Suivre les tests biologiques.</p>
+    <button type="button" class="refresh-button" (click)="loadStats()">
+      Actualiser
+    </button>
+  </header>
+
+  @if (errorMessage) {
+    <div class="alert alert-error">
+      {{ errorMessage }}
     </div>
-  </div>
-</section>
+  }
+
+  @if (isLoading) {
+    <p>Chargement des statistiques...</p>
+  } @else {
+    @if (stats) {
+      <section class="stats-grid">
+        <article class="stat-card">
+          <span>Donneurs</span>
+          <strong>{{ stats.totalDonneurs }}</strong>
+          <p>Total donneurs enregistrés</p>
+        </article>
+
+        <article class="stat-card">
+          <span>Dons</span>
+          <strong>{{ stats.totalDons }}</strong>
+          <p>Total dons enregistrés</p>
+        </article>
+
+        <article class="stat-card">
+          <span>Poches de sang</span>
+          <strong>{{ stats.totalPoches }}</strong>
+          <p>Total poches créées</p>
+        </article>
+
+        <article class="stat-card success">
+          <span>Poches disponibles</span>
+          <strong>{{ stats.pochesDisponibles }}</strong>
+          <p>Poches validées et utilisables</p>
+        </article>
+
+        <article class="stat-card warning">
+          <span>Poches indisponibles</span>
+          <strong>{{ stats.pochesIndisponibles }}</strong>
+          <p>Poches en attente ou rejetées</p>
+        </article>
+
+        <article class="stat-card">
+          <span>Patients</span>
+          <strong>{{ stats.totalPatients }}</strong>
+          <p>Total patients enregistrés</p>
+        </article>
+
+        <article class="stat-card">
+          <span>Demandes</span>
+          <strong>{{ stats.totalDemandes }}</strong>
+          <p>Total demandes de sang</p>
+        </article>
+
+        <article class="stat-card warning">
+          <span>Demandes en attente</span>
+          <strong>{{ stats.demandesEnAttente }}</strong>
+          <p>Demandes à traiter</p>
+        </article>
+
+        <article class="stat-card danger">
+          <span>Tests positifs</span>
+          <strong>{{ stats.testsPositifs }}</strong>
+          <p>Résultats biologiques positifs</p>
+        </article>
+
+        <article class="stat-card success">
+          <span>Tests négatifs</span>
+          <strong>{{ stats.testsNegatifs }}</strong>
+          <p>Résultats biologiques négatifs</p>
+        </article>
+      </section>
+
+      <section class="dashboard-section">
+        <h2>Résumé opérationnel</h2>
+
+        <div class="summary-list">
+          <div class="summary-item">
+            <span>Stock utilisable</span>
+            <strong>{{ stats.pochesDisponibles }} / {{ stats.totalPoches }}</strong>
+          </div>
+
+          <div class="summary-item">
+            <span>Demandes à traiter</span>
+            <strong>{{ stats.demandesEnAttente }}</strong>
+          </div>
+
+          <div class="summary-item">
+            <span>Tests biologiques positifs</span>
+            <strong>{{ stats.testsPositifs }}</strong>
+          </div>
+        </div>
+      </section>
+    }
+  }
+</div>
