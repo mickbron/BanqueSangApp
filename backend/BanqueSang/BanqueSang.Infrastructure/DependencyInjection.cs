@@ -37,6 +37,12 @@ public static class DependencyInjection
         services.AddScoped<ITestRepository, TestRepository>();
         services.AddScoped<IResultatTestRepository, ResultatTestRepository>();
         services.AddScoped<ITestBiologiqueService, TestBiologiqueService>();
+        
+        services.AddScoped<IPatientRepository, PatientRepository>();
+        services.AddScoped<IPatientService, PatientService>();
+
+        services.AddScoped<IDemandeSangRepository, DemandeSangRepository>();
+        services.AddScoped<IDemandeSangService, DemandeSangService>();
 
         return services;
     }

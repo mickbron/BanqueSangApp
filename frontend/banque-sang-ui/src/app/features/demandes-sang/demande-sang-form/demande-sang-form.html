@@ -1,0 +1,161 @@
+<div class="modal-overlay">
+  <section class="modal-card" role="dialog" aria-modal="true">
+    <header class="modal-header">
+      <h2>Nouvelle demande de sang</h2>
+
+      <button type="button" class="close-button" (click)="close()" aria-label="Fermer">
+        ×
+      </button>
+    </header>
+
+    @if (errorMessage) {
+      <div class="alert-error">
+        {{ errorMessage }}
+      </div>
+    }
+
+    <form [formGroup]="demandeForm" (ngSubmit)="onSubmit()">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="idPatient">Patient *</label>
+          <select
+            id="idPatient"
+            formControlName="idPatient"
+            [attr.aria-invalid]="isInvalid('idPatient')"
+          >
+            <option value="">Sélectionner un patient</option>
+
+            @for (patient of patients; track patient.idPatient) {
+              <option [value]="patient.idPatient">
+                {{ patient.patientPrenom }} {{ patient.patientNom }} — {{ patient.patientGroupeSanguin }}
+              </option>
+            }
+          </select>
+
+          @if (isInvalid('idPatient')) {
+            <small>Le patient est obligatoire.</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="idPersonnel">Personnel *</label>
+          <input
+            id="idPersonnel"
+            type="number"
+            formControlName="idPersonnel"
+            min="1"
+            [attr.aria-invalid]="isInvalid('idPersonnel')"
+          />
+
+          @if (isInvalid('idPersonnel')) {
+            <small>Le personnel est obligatoire.</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="typeComposant">Type de composant *</label>
+          <select
+            id="typeComposant"
+            formControlName="typeComposant"
+            [attr.aria-invalid]="isInvalid('typeComposant')"
+          >
+            @for (type of typesComposants; track type) {
+              <option [value]="type">
+                {{ type }}
+              </option>
+            }
+          </select>
+
+          @if (isInvalid('typeComposant')) {
+            <small>Le type de composant est obligatoire.</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="quantitePoche">Quantité de poches *</label>
+          <input
+            id="quantitePoche"
+            type="number"
+            formControlName="quantitePoche"
+            min="1"
+            [attr.aria-invalid]="isInvalid('quantitePoche')"
+          />
+
+          @if (isInvalid('quantitePoche')) {
+            <small>La quantité doit être supérieure à 0.</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="urgence">Urgence *</label>
+          <select
+            id="urgence"
+            formControlName="urgence"
+            [attr.aria-invalid]="isInvalid('urgence')"
+          >
+            @for (urgence of urgences; track urgence) {
+              <option [value]="urgence">
+                {{ urgence }}
+              </option>
+            }
+          </select>
+
+          @if (isInvalid('urgence')) {
+            <small>L’urgence est obligatoire.</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="dateDemande">Date / heure *</label>
+          <input
+            id="dateDemande"
+            type="datetime-local"
+            formControlName="dateDemande"
+            [attr.aria-invalid]="isInvalid('dateDemande')"
+          />
+
+          @if (isInvalid('dateDemande')) {
+            <small>La date de demande est obligatoire.</small>
+          }
+        </div>
+
+        <div class="form-group full-width">
+          <label for="idSang">Poche à réserver</label>
+          <select id="idSang" formControlName="idSang">
+            <option value="">Aucune poche sélectionnée</option>
+
+            @for (poche of poches; track poche.idSang) {
+              <option [value]="poche.idSang">
+                Poche #{{ poche.idSang }} — {{ poche.sangTypeComposant }} — Don #{{ poche.idDon }}
+              </option>
+            }
+          </select>
+        </div>
+
+        <div class="form-group full-width">
+          <label for="commentaire">Commentaire</label>
+          <textarea
+            id="commentaire"
+            formControlName="commentaire"
+            rows="4"
+            placeholder="Commentaire optionnel"
+          ></textarea>
+        </div>
+      </div>
+
+      <footer class="modal-actions">
+        <button type="button" class="cancel-button" (click)="close()">
+          Annuler
+        </button>
+
+        <button type="submit" class="submit-button" [disabled]="demandeForm.invalid || isSubmitting">
+          @if (isSubmitting) {
+            Enregistrement...
+          } @else {
+            Enregistrer la demande
+          }
+        </button>
+      </footer>
+    </form>
+  </section>
+</div>

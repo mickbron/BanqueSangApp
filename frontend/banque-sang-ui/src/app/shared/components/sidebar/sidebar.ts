@@ -60,7 +60,7 @@ export class Sidebar {
     {
       label: 'Demandes',
       icon: '📨',
-      route: '/demandes-sang',
+      route: '/demandes',
       roles: ['ADMINISTRATEUR', 'MEDECIN']
     },
     {

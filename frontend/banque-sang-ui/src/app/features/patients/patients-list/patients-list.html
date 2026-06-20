@@ -1,0 +1,103 @@
+<div class="page-container">
+  <header class="page-header">
+    <div>
+      <h1>Patients</h1>
+      <p>Gestion des patients nécessitant une transfusion sanguine.</p>
+    </div>
+
+    <button type="button" class="primary-button" (click)="openPatientForm()">
+      + Nouveau patient
+    </button>
+  </header>
+
+  @if (successMessage) {
+    <div class="alert alert-success">
+      {{ successMessage }}
+    </div>
+  }
+
+  @if (errorMessage) {
+    <div class="alert alert-error">
+      {{ errorMessage }}
+    </div>
+  }
+
+  <section class="summary-grid">
+    <div class="summary-card">
+      <span>Total patients</span>
+      <strong>{{ patients.length }}</strong>
+    </div>
+  </section>
+
+  <section class="section-card">
+    <h2>Liste des patients</h2>
+
+    @if (isLoading) {
+      <p>Chargement des patients...</p>
+    } @else {
+      <div class="table-card">
+        <table>
+          <thead>
+          <tr>
+            <th>Code</th>
+            <th>Nom complet</th>
+            <th>Groupe sanguin</th>
+            <th>Date naissance</th>
+            <th>Téléphone</th>
+            <th>Service</th>
+            <th>Adresse</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+
+          <tbody>
+            @for (patient of patients; track patient.idPatient) {
+              <tr>
+                <td>#{{ patient.idPatient }}</td>
+                <td>{{ patient.patientPrenom }} {{ patient.patientNom }}</td>
+                <td>
+                  <span class="blood-badge">
+                    {{ patient.patientGroupeSanguin }}
+                  </span>
+                </td>
+                <td>{{ patient.patientDateNaissance | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ patient.patientTelephone }}</td>
+                <td>
+                  @if (patient.idService) {
+                    Service #{{ patient.idService }}
+                  } @else {
+                    -
+                  }
+                </td>
+                <td>{{ patient.patientAdresse }}</td>
+                <td>
+                  <button
+                    type="button"
+                    class="secondary-button"
+                    (click)="editPatient(patient)"
+                  >
+                    Modifier
+                  </button>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="8" class="empty-message">
+                  Aucun patient enregistré.
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </section>
+
+  @if (showPatientForm) {
+    <app-patient-form
+      [patientToEdit]="selectedPatient"
+      (closed)="closePatientForm()"
+      (patientSaved)="onPatientSaved()"
+    />
+  }
+</div>

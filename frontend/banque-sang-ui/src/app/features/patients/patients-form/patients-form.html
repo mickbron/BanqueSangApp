@@ -1,0 +1,147 @@
+<div class="modal-overlay">
+  <section class="modal-card" role="dialog" aria-modal="true">
+    <header class="modal-header">
+      <h2>
+        @if (patientToEdit) {
+          Modifier le patient
+        } @else {
+          Nouveau patient
+        }
+      </h2>
+
+      <button type="button" class="close-button" (click)="close()" aria-label="Fermer">
+        ×
+      </button>
+    </header>
+
+    @if (errorMessage) {
+      <div class="alert-error">
+        {{ errorMessage }}
+      </div>
+    }
+
+    <form [formGroup]="patientForm" (ngSubmit)="onSubmit()">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="patientNom">Nom *</label>
+          <input
+            id="patientNom"
+            type="text"
+            formControlName="patientNom"
+            [attr.aria-invalid]="isInvalid('patientNom')"
+          />
+
+          @if (isInvalid('patientNom')) {
+            <small>Le nom est obligatoire.</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="patientPrenom">Prénom *</label>
+          <input
+            id="patientPrenom"
+            type="text"
+            formControlName="patientPrenom"
+            [attr.aria-invalid]="isInvalid('patientPrenom')"
+          />
+
+          @if (isInvalid('patientPrenom')) {
+            <small>Le prénom est obligatoire.</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="patientDateNaissance">Date de naissance *</label>
+          <input
+            id="patientDateNaissance"
+            type="date"
+            formControlName="patientDateNaissance"
+            [attr.aria-invalid]="isInvalid('patientDateNaissance')"
+          />
+
+          @if (isInvalid('patientDateNaissance')) {
+            <small>La date de naissance est obligatoire.</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="patientGroupeSanguin">Groupe sanguin *</label>
+          <select
+            id="patientGroupeSanguin"
+            formControlName="patientGroupeSanguin"
+            [attr.aria-invalid]="isInvalid('patientGroupeSanguin')"
+          >
+            <option value="">Sélectionner un groupe</option>
+
+            @for (groupe of groupesSanguins; track groupe) {
+              <option [value]="groupe">
+                {{ groupe }}
+              </option>
+            }
+          </select>
+
+          @if (isInvalid('patientGroupeSanguin')) {
+            <small>Le groupe sanguin est obligatoire.</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="patientTelephone">Téléphone *</label>
+          <input
+            id="patientTelephone"
+            type="text"
+            formControlName="patientTelephone"
+            [attr.aria-invalid]="isInvalid('patientTelephone')"
+          />
+
+          @if (isInvalid('patientTelephone')) {
+            <small>Le téléphone est obligatoire.</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="idService">Service</label>
+          <input
+            id="idService"
+            type="number"
+            formControlName="idService"
+            min="1"
+            placeholder="Exemple : 1"
+          />
+        </div>
+
+        <div class="form-group full-width">
+          <label for="patientAdresse">Adresse *</label>
+          <textarea
+            id="patientAdresse"
+            formControlName="patientAdresse"
+            rows="3"
+            [attr.aria-invalid]="isInvalid('patientAdresse')"
+          ></textarea>
+
+          @if (isInvalid('patientAdresse')) {
+            <small>L’adresse est obligatoire.</small>
+          }
+        </div>
+      </div>
+
+      <footer class="modal-actions">
+        <button type="button" class="cancel-button" (click)="close()">
+          Annuler
+        </button>
+
+        <button type="submit" class="submit-button" [disabled]="patientForm.invalid || isSubmitting">
+          @if (isSubmitting) {
+            Enregistrement...
+          } @else {
+            @if (patientToEdit) {
+              Modifier le patient
+            } @else {
+              Enregistrer le patient
+            }
+          }
+        </button>
+      </footer>
+    </form>
+  </section>
+</div>

@@ -6,6 +6,8 @@ import { DonneursList } from './features/donneurs/donneurs-list/donneurs-list';
 import { DonsList } from './features/dons/dons-list/dons-list';
 import { StockDashboard } from './features/stock/stock-dashboard/stock-dashboard';
 import { TestsList } from './features/tests/tests-list/tests-list';
+import { PatientsList } from './features/patients/patients-list/patients-list';
+import { DemandesSangList } from './features/demandes-sang/demandes-sang-list/demandes-sang-list';
 import { Layout } from './shared/components/layout/layout';
 
 
@@ -57,6 +59,22 @@ export const routes: Routes = [
         canActivate: [roleGuard],
         data: {
           roles: ['ADMINISTRATEUR', 'TECHNICIEN', 'MEDECIN']
+        }
+      },
+      {
+        path: 'patients',
+        component: PatientsList,
+        canActivate: [roleGuard],
+        data: {
+          roles: ['ADMINISTRATEUR', 'MEDECIN']
+        }
+      },
+      {
+        path: 'demandes',
+        component: DemandesSangList,
+        canActivate: [roleGuard],
+        data: {
+          roles: ['ADMINISTRATEUR', 'MEDECIN']
         }
       }
     ]
