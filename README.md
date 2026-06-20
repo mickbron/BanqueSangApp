@@ -189,6 +189,35 @@ Les comptes suivants peuvent être utilisés pour tester l’application.
 
 ---
 
+## Cloner le projet depuis GitHub
+
+Pour récupérer le projet sur une autre machine, utiliser la commande suivante :
+
+```bash
+git clone URL_DU_DEPOT_GITHUB
+```
+
+Exemple :
+
+```bash
+git clone https://github.com/nom-utilisateur/nom-du-repository.git
+```
+
+Ensuite, entrer dans le dossier du projet :
+
+```bash
+cd BanqueSangApp
+```
+
+Le projet contient deux parties principales :
+
+```text
+backend/
+frontend/
+```
+
+Il faut donc lancer séparément le backend ASP.NET Core et le frontend Angular.
+
 ## Installation du backend
 
 Se placer dans le dossier backend :
