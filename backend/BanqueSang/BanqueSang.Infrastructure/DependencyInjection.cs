@@ -43,6 +43,9 @@ public static class DependencyInjection
 
         services.AddScoped<IDemandeSangRepository, DemandeSangRepository>();
         services.AddScoped<IDemandeSangService, DemandeSangService>();
+        
+        services.AddScoped<IDashboardRepository, DashboardRepository>();
+        services.AddScoped<IDashboardService, DashboardService>();
 
         return services;
     }
